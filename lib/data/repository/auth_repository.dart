@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'package:canary_101/data/model/request/auth/login_request_model.dart';
 import 'package:canary_101/data/model/request/auth/register_request_model.dart';
-import 'package:canary_101/data/model/response/login_response_model.dart';
+import 'package:canary_101/data/model/response/auth_response_model.dart';
 import 'package:canary_101/service/service_http_client.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dartz/dartz.dart';
@@ -13,7 +13,7 @@ class AuthRepository {
 
   AuthRepository(this._serviceHttpClient);
 
-  Future<Either<String, LoginResponseModel>> login(
+  Future<Either<String, AuthResponseModel>> login(
     LoginRequestModel requestModel,
   ) async {
     try {
@@ -23,7 +23,7 @@ class AuthRepository {
       );
       final jsonResponse = json.decode(response.body);
       if (response.statusCode == 200) {
-        final loginResponse = LoginResponseModel.fromMap(jsonResponse);
+        final loginResponse = AuthResponseModel.fromMap(jsonResponse);
         await secureStorage.write(
           key: "authToken",
           value: loginResponse.user!.token,
@@ -40,7 +40,7 @@ class AuthRepository {
       }
     } catch (e) {
       log("Error in login: $e");
-      return Left("An error occured while logging in.");
+      return Left("An error occurred while logging in.");
     }
   }
 
@@ -58,12 +58,12 @@ class AuthRepository {
         log("Registration successful: ${registerResponse}");
         return Right(registerResponse);
       } else {
-         log("Registration failed: ${jsonResponse['message']}");
+        log("Registration failed: ${jsonResponse['message']}");
         return Left(jsonResponse['message'] ?? "Registration failed");
       }
     } catch (e) {
       log("Error in registration: $e");
-      return Left("An error occured while registering.");
+      return Left("An error occurred while registering.");
     }
   }
 }
