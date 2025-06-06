@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:canary_101/data/model/request/admin/induk_request_model.dart';
 import 'package:canary_101/data/model/response/get_all_induk_response.dart';
-import 'package:canary_101/data/service/service_http_client.dart';
+import 'package:canary_101/service/service_http_client.dart';
 import 'package:dartz/dartz.dart';
 
 class IndukRepository {
